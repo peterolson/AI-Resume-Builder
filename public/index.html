@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ai Resume Builder</title>
+    <title>AI Resume Builder</title>
     <link rel="stylesheet" href="AIResumeBuilder.css" />
   </head>
   <body>
     <h1>Resume Builder</h1>
 
     <form id="resumeForm" class="option1">
+      <p id="formError" class="error-msg"></p>
       <!-- Name -->
       <label for="name">Full Name</label>
       <input type="text" id="name" required />
@@ -30,16 +31,16 @@
       <label for="skills">Skills</label>
       <input type="text" id="skills" required />
 
-      <button type="submit">Build Resume</button>
-
       <label for="design">Choose a design</label>
       <select id="design">
         <option value="option1">Classic White</option>
         <option value="option2">Classic White Blue</option>
       </select>
-      <button type="button" id="downloadBtn">Download as PDF</button>
+      <div class="form-buttons">
+        <button type="submit">Build Resume</button>
+      </div>
     </form>
-    <div id="resume" style="display: none"></div>
+    <div id="resume"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="AIResumeBuilder.js"></script>
   </body>

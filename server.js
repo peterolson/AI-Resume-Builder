@@ -1,10 +1,11 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const rateLimit = require("express-rate-limit");
-require("dotenv").config();
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -25,17 +26,11 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public"))); // serve only public folder
 
 // Input validation helper
-function validateInputs({
-  fullName,
-  email,
-  education,
-  workExperience,
-  skills,
-}) {
-  if (!fullName || !email || !education || !workExperience || !skills) {
+function validateInputs({ name, email, education, workExperience, skills }) {
+  if (!name || !email || !education || !workExperience || !skills) {
     return "All fields are required.";
   }
-  if (fullName.length > 100) return "Name is too long.";
+  if (name.length > 100) return "Name is too long.";
   if (email.length > 100) return "Email is too long.";
   if (education.length > 500) return "Education is too long.";
   if (workExperience.length > 1000) return "Work experience is too long.";
@@ -50,7 +45,7 @@ app.post("/api/ai-improve", limiter, async (req, res) => {
     return res.status(400).json({ error: validationError });
   }
   try {
-    const { fullName, email, education, workExperience, skills } = req.body;
+    const { name, email, education, workExperience, skills } = req.body;
 
     // Instruction for ChatGPT
     const prompt = `
@@ -67,9 +62,9 @@ Use only semantic HTML and the following class names EXACTLY where appropriate:
   - skills-list
   - skill-item
 
-Fill in missing fields, make the language professional and concise. Output only the HTML fragment. Don't change name and email address.
+Fill in missing fields, make the language professional and concise. Output only the HTML fragment. Use original name and email address
 Resume data:
-Name: ${fullName}
+Name: ${name}
 Email: ${email}
 Education: ${education}
 Work Experience: ${workExperience}
